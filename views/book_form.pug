@@ -1,0 +1,55 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='title') Title:
+      //-input#title.form-control(type='text', placeholder='Name of book' name='title' required='true' value=(undefined===book ? '' : book.title) )
+      input#title.form-control(type='text', placeholder='Name of book' name='title' value=(undefined===book ? '' : book.title) )
+    div.form-group
+      label(for='author') Author:
+      //-select#author.form-control(type='select', placeholder='Select author' name='author' required='true' )
+      select#author.form-control(type='select', placeholder='Select author' name='author' )
+        for author in authors
+          //- for GET request book will be undefined.
+          if book
+            //- Handle GET form where book.author is an model object and book.author._id is ObjectID and gives string in comparing, and POST form where book.author is ObjectID object and gives string in comparing.
+            //- var bln;
+            //- bln = author._id.toString()==book.author._id; // true for both GET and POST.
+            //- console.log(`author._id.toString()==book.author._id ` + bln)
+            //- bln = author._id.toString()==book.author; // false for GET, true for POST.
+            //- console.log(`author._id.toString()==book.author ` + bln)
+            //- console.log(`author._id.toString() ` + author._id.toString());
+            //- console.log(`book.author._id ` + book.author._id);
+            //- console.log(`book.author ` + book.author);
+            option(value=author._id selected=(author._id.toString()==book.author._id ? 'selected' : false)) #{author.name}
+            //-option(value=author._id selected=(author._id.toString()==book.author._id || author._id.toString()==book.author ? 'selected' : false)) #{author.name}
+          else
+            option(value=author._id) #{author.name}
+    div.form-group
+      label(for='summary') Summary:
+      //-input#summary.form-control(type='textarea', placeholder='Summary' name='summary' value=(undefined===book ? '' : book.summary) required='true')
+      input#summary.form-control(type='textarea', placeholder='Summary' name='summary' value=(undefined===book ? '' : book.summary))
+    div.form-group
+      label(for='isbn') ISBN:
+      //-input#isbn.form-control(type='text', placeholder='ISBN13' name='isbn' value=(undefined===book ? '' : book.isbn) required='true') 
+      input#isbn.form-control(type='text', placeholder='ISBN13' name='isbn' value=(undefined===book ? '' : book.isbn)) 
+    div.form-group
+      label Genre:
+      div
+        for genre in genres
+          div(style='display: inline; padding-right:10px;')
+            //- checked=genre.checked if property genre.checked not set it is not rendered.
+            input.checkbox-input(type='checkbox', name='genre', id=genre._id, value=genre._id, checked=genre.checked )
+            //-<input class="checkbox-input" name="genre" id="5beea91b8cfe0caf73ba65a3" value="5beea91b8cfe0caf73ba65a3" type="checkbox"> initial rendering.
+            //-<input class="checkbox-input" name="genre" id="5beea91b8cfe0caf73ba65a4" value="5beea91b8cfe0caf73ba65a4" checked="true" type="checkbox"> if genre selected
+            label(for=genre._id) #{genre.name}
+    button.btn.btn-primary(type='submit') Submit
+
+  //- for GET request errors will be undefined.
+  if errors 
+    ul
+      for error in errors
+        li!= error.msg
