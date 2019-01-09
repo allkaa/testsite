@@ -19,6 +19,7 @@
 
 .clearfix::after {
   content: "";
+  /* No floating elements allowed on either the left or the right side */
   clear: both;
   display: table;
 }
@@ -73,7 +74,7 @@
     <p>You will learn more about web layout and responsive web pages in a later chapter.</p>
   </div>
 </div>
-
+<!-- .clearfix::after -->
 <div class="footer">
   <p>Footer Text</p>
 </div>
